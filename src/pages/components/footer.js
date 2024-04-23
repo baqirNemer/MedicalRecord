@@ -72,7 +72,7 @@ function ResponsiveFooter() {
         </div>
       </div>
       <div className="text-center py-4" style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
-        <p className="mb-0">&copy; 2021 Copyright: <a href="" className="fw-bold">MediRec.com</a></p>
+        <p className="mb-0">&copy; 2024 Copyright: <a href="" className="fw-bold">MediRec.com</a></p>
       </div>
     </footer>
   );
