@@ -7,6 +7,8 @@ import Carousel from './components/Carousel';
 import About from './components/About';
 import CardController from './components/CardController_Home';
 
+localStorage.setItem('NewuserEmail', '');
+
 function Homepage() {
   return (
     <div className="App">

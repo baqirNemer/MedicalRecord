@@ -231,14 +231,16 @@ function Profile() {
   
   const renderProfileSection = () => (
     <Container maxWidth="sm">
+
+      
       {selectedSection === 'profile' && userDetails && (
-        <>
-          <div style={{ textAlign: 'center' }}>
-            <img
-              alt="User Avatar"
-              src={userDetails.image}
-              style={{ width: 100, height: 100, marginBottom: 10 }}
-            />
+        <Box sx={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start', marginLeft: '-100px', marginTop: '100px' }}>
+          {/* User Image */}
+          <Box>
+            <img alt="User Avatar" src={userDetails.image} style={{ width: 300, height: 300, marginBottom: 10 }} />
+          </Box>
+          {/* User Details */}
+          <Box sx={{ marginLeft: '20px', marginTop: '20px' }}> {/* Adjust the margin as needed */}
             <Typography variant="h5" gutterBottom>
               {userDetails.f_name} {userDetails.l_name}
             </Typography>
@@ -263,12 +265,13 @@ function Profile() {
               <strong>Role:</strong> {userDetails.role_name}
             </Typography>
             <ContainedButtons text="Edit Profile" />
-          </div>
-        </>
+          </Box>
+        </Box>
       )}
+
   
       {selectedSection === 'records' && (
-        <Paper mt={4}>
+        <Paper mt={4} sx={{marginTop: '100px' }}>
           <Typography variant="h4" gutterBottom>
             Records
           </Typography>
@@ -304,7 +307,7 @@ function Profile() {
       )}
   
       {selectedSection === 'appointments' && (
-        <Paper mt={4}>
+        <Paper mt={4} sx={{marginTop: '100px' }}>
           <Typography variant="h4" gutterBottom>
             Appointments
           </Typography>
@@ -345,32 +348,32 @@ function Profile() {
       <ResponsiveAppBar />
       <Box sx={{ display: 'flex' }}>
         {/* Sidebar */}
-        <Drawer
-          variant="permanent"
+        <Box
           sx={{
             width: 240,
             flexShrink: 0,
-            '& .MuiDrawer-paper': {
-              width: 240,
-              backgroundColor: '#008A88',
-              marginTop: '68px', 
-            },
+            position: 'absolute',
+            top: '68px', // Adjust top position to match the navbar height
+            left: 0,
+            backgroundColor: '#008A88',
+            height: 'calc(100vh - 64px)', // Calculate height to fill remaining viewport
+            overflowY: 'auto', // Enable scrolling if content exceeds sidebar height
           }}
         >
           <List>
             {['profile', 'records', 'appointments'].map((section) => (
-              <ListItem key={section} onClick={() => handleSectionClick(section)} >
+              <ListItem key={section} onClick={() => handleSectionClick(section)}>
                 <ListItemText primary={section.charAt(0).toUpperCase() + section.slice(1)} />
               </ListItem>
             ))}
-            <ListItem button onClick={handleLogoutClick}>
+            <ListItem onClick={handleLogoutClick}>
               <ListItemText primary="Logout" />
             </ListItem>
           </List>
-        </Drawer>
+        </Box>
 
         {/* Main Content */}
-        <Box sx={{ flexGrow: 1, p: 3, marginTop: '64px' }}>
+        <Box sx={{ flexGrow: 1, p: 3, marginLeft: '240px' /* Adjust left margin to match sidebar width */ }}>
           {renderProfileSection()}
         </Box>
       </Box>

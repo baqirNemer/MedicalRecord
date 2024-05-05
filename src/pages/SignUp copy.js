@@ -52,11 +52,8 @@ function SignUp() {
     const { name, value } = e.target;
     if (name === 'locationSelect') {
       const selectedLocation = existingLocations.find(loc => loc._id === value);
-      setSelectedLocation(selectedLocation); // Set selected location
-      setFormData((prevData) => ({
-        ...prevData,
-        location_id: selectedLocation ? selectedLocation._id : '', // Update location_id
-      }));
+      console.log('Selected Location:', selectedLocation);
+      setSelectedLocation(selectedLocation);
     } else {
       setFormData((prevData) => ({
         ...prevData,
@@ -65,7 +62,7 @@ function SignUp() {
     }
   };
   
-  
+
   const handleNextStep = (e) => {
     console.log('Current Form Data:', formData);
     e.preventDefault();
@@ -118,66 +115,33 @@ function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Phone number validation
-    const phoneRegex = /^\d{8,}$/; // Minimum 8 digits
-    if (!phoneRegex.test(formData.phone)) {
-      alert('Please input a valid phone number with at least 8 digits.');
-      return;
-    }
-
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email format check
-    if (!emailRegex.test(formData.email)) {
-      alert('Please input a valid email address.');
-      return;
-    }
-    const existingEmailsResponse = await axios.get('http://localhost:3001/api/users/emails');
-    const existingEmails = existingEmailsResponse.data.map(emailObj => emailObj.email);
-
-    // Check if the new user's email already exists
-    if (existingEmails.includes(formData.email)) {
-      alert('Email is already taken. Please choose another email.');
-      return;
-    }
-
-    // Password validation
-    const passwordRegex = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/; // Minimum 8 characters with at least 1 digit and 1 special character Like :Password1!
-    if (!passwordRegex.test(formData.pass)) {
-      alert('Password must be at least 8 characters long and contain at least 1 digit and 1 special character.');
-      return;
-    }
-
     try {
       const response = await axios.post('http://localhost:3001/api/users', formData);
       console.log('User created:', response.data);
-      localStorage.setItem('NewuserEmail', formData.email);
       navigate('/login');
     } catch (error) {
-      console.error('Error creating user:', error.response.data);
+      
+      console.error('Error creating user:');
+      console.error('Error:', error.response.data);
     }
   };
- 
-  
-  
   const renderStep = () => {
     switch (step) {
       case 1:
         return (
           <>
-          <div style={{ marginTop: '180px' }}> 
-            <div className="mb-3 ">
+          <div className="mb-3">
               <label htmlFor="locationSelect" className="form-label">Select Existing Location</label>
               <select className="form-select" id="locationSelect" name="locationSelect" onChange={handleChange}>
-                <option value="">Choose location...</option>
-                {existingLocations.map((location) => (
-                  <option key={location._id} value={location._id}>
-                    {location.city}, {location.street}, {location.address1}, {location.address2}
-                  </option>
-                ))}
-              </select>
+              <option value="">Choose location...</option>
+              {existingLocations.map((location) => (
+                <option key={location._id} value={location._id}>
+                  {location.city}, {location.street}, {location.address1}, {location.address2}
+                </option>
+              ))}
+            </select>
             </div>
-              
+            
             <div className="mb-3">
               <label className="form-label">-----------------------------OR-----------------------------</label>
             </div>
@@ -187,7 +151,7 @@ function SignUp() {
               <ContainedButton to="/addlocation">Add New Location</ContainedButton>
             </div>
             <ContainedButtons text="Next" className="btn btn-primary" onClick={handleNextStep} />
-            </div>
+            
           </>
         );
       case 2:
@@ -237,6 +201,27 @@ function SignUp() {
             </div>
           </>
         );
+
+      // case 3:
+      //   return (
+      //     <>
+      //       <div className={`mb-3 ${fieldErrors.image ? 'has-error' : ''}`}>
+      //         <label htmlFor="image" className="form-label">Profile Picture</label>
+      //         <input
+      //           type="file"
+      //           className={`form-control ${fieldErrors.image ? 'has-error' : ''}`}
+      //           id="image"
+      //           name="image"
+      //           onChange={handleChange}
+      //         />
+      //       </div>
+      //       <div className="d-flex justify-content-between">
+      //       <ContainedButtons text="Back" className="btn btn-secondary" onClick={handleBackStep} />
+      //       <ContainedButtons text="Sign Up" type="submit" className="btn btn-primary" onClick={handleSubmit} />
+      //       </div>
+      //     </>
+      //   );
+
       default:
         return null;
     }
