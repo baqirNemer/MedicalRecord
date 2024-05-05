@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link } from 'react-router-dom';
+import ResponsiveAppBar from './components/Navbar';
+import ContainedButton from './components/Button_nav';
+import ContainedButtons from './components/Button';
 
 function SignUp() {
   const [formData, setFormData] = useState({
@@ -18,11 +20,21 @@ function SignUp() {
     role_name: 'patient',
     image: ''
   });
-  
 
   const [existingLocations, setExistingLocations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [step, setStep] = useState(1);
+  const [fieldErrors, setFieldErrors] = useState({
+    f_name: false,
+    l_name: false,
+    email: false,
+    phone: false,
+    dob: false,
+    blood_type: false,
+    pass: false,
+    location: false // Error state for location selection
+  });
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -50,13 +62,30 @@ function SignUp() {
     }
   };
   
+
   const handleNextStep = (e) => {
+    console.log('Current Form Data:', formData);
     e.preventDefault();
   
+    const requiredFields = ['f_name', 'l_name', 'email', 'phone', 'dob', 'blood_type', 'pass'];
+  const areRequiredFieldsFilled = requiredFields.every((field) => {
+    const isFieldFilled = formData[field].trim() !== '';
+    if (!isFieldFilled) {
+      setFieldErrors((prevErrors) => ({
+        ...prevErrors,
+        [field]: true // Set error state for empty required field
+      }));
+    }
+    return isFieldFilled;
+  });
     if (step === 1 && selectedLocation) {
       console.log('Selected Location ID:', selectedLocation._id);
     }
-  
+    if (step === 1 && !selectedLocation) {
+      alert('Please select a location to proceed');
+      console.log('Selected Location ID:');
+      return;
+    }
     if (step === 2 && selectedLocation) {
       // Update formData with the selected location
       setFormData((prevData) => ({
@@ -71,18 +100,24 @@ function SignUp() {
         location_id: selectedLocation._id // Ensure location_id is correctly updated
       });
     }
+
+    if (step === 2 && !areRequiredFieldsFilled) {
+      return; // Prevent proceeding if there are empty required fields or no selected location
+    }
   
     setStep((prevStep) => prevStep + 1);
   };
-  
-  
+
+  const handleBackStep = () => {
+    setStep((prevStep) => prevStep - 1);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:3001/api/users', formData);
       console.log('User created:', response.data);
-      navigate('/');
+      navigate('/login');
     } catch (error) {
       console.error('Error:', error.response.data);
     }
@@ -110,13 +145,13 @@ function SignUp() {
             </div>
 
             <div className="mb-3">
-              <button className="btn btn-primary"> <Link to="/addlocation" className="text-white" >Add New Location</Link></button>
+              
+              <ContainedButton to="/addlocation">Add New Location</ContainedButton>
             </div>
-
+            <ContainedButtons text="Next" className="btn btn-primary" onClick={handleNextStep} />
+            
           </>
         );
-
-        
       case 2:
         return (
           <>
@@ -158,37 +193,48 @@ function SignUp() {
               <label htmlFor="pass" className="form-label">Password</label>
               <input type="password" className="form-control" id="pass" name="pass" value={formData.pass} onChange={handleChange} />
             </div>
-            
-          </>
-        );
-      case 3:
-        return (
-          <>
-            <div className="mb-3">
-              <label htmlFor="image" className="form-label">Profile Picture</label>
-              <input type="file" className="form-control" id="image" name="image" onChange={handleChange} />
+            <div className="d-flex justify-content-between">
+            <ContainedButtons text="Back" className="btn btn-secondary" onClick={handleBackStep} />
+            <ContainedButtons text="Next" className="btn btn-primary" onClick={handleNextStep} />
             </div>
           </>
         );
+
+      case 3:
+        return (
+          <>
+            <div className={`mb-3 ${fieldErrors.image ? 'has-error' : ''}`}>
+              <label htmlFor="image" className="form-label">Profile Picture</label>
+              <input
+                type="file"
+                className={`form-control ${fieldErrors.image ? 'has-error' : ''}`}
+                id="image"
+                name="image"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="d-flex justify-content-between">
+            <ContainedButtons text="Back" className="btn btn-secondary" onClick={handleBackStep} />
+            <ContainedButtons text="Sign Up" type="submit" className="btn btn-primary" onClick={handleSubmit} />
+            </div>
+          </>
+        );
+
       default:
         return null;
     }
   };
 
   return (
-    <div className="container mt-5">
-      <div className="row justify-content-center">
-        <div className="col-md-6">
-          <form onSubmit={handleSubmit}>
-            {renderStep()}
-            {step !== 3 && (
-               <button className="btn btn-primary" onClick={handleNextStep}>Next</button>
-          
-            )}
-            {step === 3 && (
-              <button type="submit" className="btn btn-primary">Sign Up</button>
-            )}
-          </form>
+    <div>
+      <ResponsiveAppBar />
+      <div className="container mt-5">
+        <div className="row justify-content-center">
+          <div className="col-md-6">
+            <form>
+              {renderStep()}
+            </form>
+          </div>
         </div>
       </div>
     </div>
