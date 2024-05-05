@@ -5,16 +5,16 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { Link } from 'react-router-dom';
 
-
-export default function ImgMediaCard({ imageSrc, title, description, shareDestination, learnMoreDestination }) {
+export default function ImgMediaCard({ hospitalId, imageSrc, title, description, shareDestination }) {
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345, marginTop: 4, marginBottom: 4 }}>
       <CardMedia
         component="img"
         alt="Hospital"
         height="240"
-        image={imageSrc} 
+        image={imageSrc}
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
@@ -26,7 +26,8 @@ export default function ImgMediaCard({ imageSrc, title, description, shareDestin
       </CardContent>
       <CardActions sx={{ justifyContent: 'flex-end' }}>
         <Button size="small" href={shareDestination}>Share</Button>
-        <Button size="small" href={learnMoreDestination}>Learn More</Button>
+
+        <Button size="small" component={Link} to={`/hospital_details/${hospitalId}`}>Learn More</Button>
       </CardActions>
     </Card>
   );

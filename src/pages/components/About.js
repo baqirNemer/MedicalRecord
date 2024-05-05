@@ -13,7 +13,7 @@ function About() {
                     <p className="text-center">
                         Lorem ipsum dolor sit amet, consectetur adipisicing elit... (Your text here)Lorem ipsum dolor sit amet, consectetur adipisicing elit... (Your text here)Lorem ipsum dolor sit amet, consectetur adipisicing elit... (Your text here)Lorem ipsum dolor sit amet, consectetur adipisicing elit... (Your text here)Lorem ipsum dolor sit amet, consectetur adipisicing elit... (Your text here)Lorem ipsum dolor sit amet, consectetur adipisicing elit... (Your text here)Lorem ipsum dolor sit amet, consectetur adipisicing elit... (Your text here)Lorem ipsum dolor sit amet, consectetur adipisicing elit... (Your text here)Lorem ipsum dolor sit amet, consectetur adipisicing elit... (Your text here)s
                     </p>
-                    <ContainedButtons/>
+                    <ContainedButtons text="Read More" />
                 </div>
                 <div className="col-md-6">
                     <img id="about" src={crossImage} className="img-fluid" alt="Cross Image1" />
