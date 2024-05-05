@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
-import SignUpPage from './pages/SignUpPage';
 import HomePage from './pages/HomePage';
 import AddLocation from './pages/AddLocation';
 import Profile from './pages/Profile';
@@ -21,7 +20,6 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/signuppage" element={<SignUpPage />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/addlocation" element={<AddLocation />} />
           <Route path="/profile" element={<Profile />} />

@@ -28,21 +28,24 @@ function ResponsiveAppBar() {
     const fetchUserDetails = async () => {
       try {
         const userEmail = localStorage.getItem('useremail');
-        const userResponse = await fetch(`http://localhost:3001/api/users/${userEmail}`);
+        if(userEmail){ 
+          const userResponse = await fetch(`http://localhost:3001/api/users/${userEmail}`);
 
-        if (!userResponse.ok) {
-          throw new Error('Failed to fetch user details');
-        }
+          if (!userResponse.ok) {
+            throw new Error('Failed to fetch user details');
+          }
 
-        const userData = await userResponse.json();
-        setUserDetails(userData);
+          const userData = await userResponse.json();
+          setUserDetails(userData);
 
-        if (userData.f_name && userData.l_name) {
-          const firstInitial = userData.f_name.charAt(0).toUpperCase();
-          const lastInitial = userData.l_name.charAt(0).toUpperCase();
-          const initials = `${firstInitial}${lastInitial}`;
-          setUserInitials(initials);
-        }
+          if (userData.f_name && userData.l_name) {
+            const firstInitial = userData.f_name.charAt(0).toUpperCase();
+            const lastInitial = userData.l_name.charAt(0).toUpperCase();
+            const initials = `${firstInitial}${lastInitial}`;
+            setUserInitials(initials);
+            console.log('User initials:', initials);
+          }
+      }
       } catch (error) {
         console.error('Error fetching user details:', error);
       }

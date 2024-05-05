@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -10,12 +10,30 @@ function Login() {
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
   const [message, setMessage] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
   const navigate = useNavigate(); // Use useNavigate hook to manage navigation
+
+
+  
+  useEffect(() => {
+    const storedEmail = localStorage.getItem('NewuserEmail');
+    if (storedEmail) {
+      setEmail(storedEmail); // Set email state with stored email from localStorage
+    }
+  }, []);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword); // Toggle password visibility state
+  };
+
+  const getButtonLabel = () => {
+    return showPassword ? 'Hide' : 'Show';
+  };
 
   const handleLogin = async () => {
     try {
       const response = await axios.post('http://localhost:3001/api/login', { email, pass });
-      localStorage.setItem('useremail' ,  email);
+      localStorage.setItem('useremail', email);
       setMessage('Successfully logged in. Redirecting to homepage...');
       navigate('/');
     } catch (error) {
@@ -44,12 +62,21 @@ function Login() {
 
               <div className="form-group">
                 <label>Password:</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  value={pass}
-                  onChange={(e) => setPass(e.target.value)}
-                />
+                <div className="input-group">
+                  <input
+                    type={showPassword ? 'text' : 'password'} // Toggle input type based on showPassword state
+                    className="form-control"
+                    value={pass}
+                    onChange={(e) => setPass(e.target.value)}
+                  />
+                  <button
+                    className="btn btn-outline-secondary"
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                  >
+                    {getButtonLabel()} {/* Use dynamic button label */}
+                  </button>
+                </div>
               </div>
 
               <div className="form-row mb-4">
@@ -68,11 +95,17 @@ function Login() {
               </div>
 
               <div className="text-center">
-              <ContainedButtons text="Sign in" className="btn btn-primary btn-block" onClick={handleLogin}/>
+                <ContainedButtons
+                  text="Sign in"
+                  className="btn btn-primary btn-block"
+                  onClick={handleLogin}
+                />
               </div>
 
               <div className="text-center mt-3">
-                <p>Not a member? <Link to="/signuppage">Register</Link></p>
+                <p>
+                  Not a member? <Link to="/signup">Register</Link>
+                </p>
                 <p>or sign up with:</p>
                 <button type="button" className="btn btn-link btn-floating mx-1">
                   <i className="fab fa-facebook-f"></i>
