@@ -1,16 +1,18 @@
 import React from 'react';
 import { Carousel as BootstrapCarousel } from 'react-bootstrap';
 
-import h1Image from './images/h1.jpg';
-import h2Image from './images/h2.jpg';
+import h1Image from './images/carousel1.png';
+import h2Image from './images/carousel2.png';
 
 const captionStyle = {
   position: 'absolute',
-  left: '15%',
-  textAlign: 'left',
-  top: '50%',
-  transform: 'translateY(-50%)',
-  width: '50%',
+  left: '0',
+  bottom: '0',
+  width: '100%',
+  textAlign: 'center',
+  backgroundColor: 'rgba(0, 0, 0, 0.3)',
+  backdropFilter: 'blur(8px)', 
+  padding: '20px',  color: 'white',
 };
 
 function Carousel() {
@@ -25,6 +27,7 @@ function Carousel() {
         <div style={captionStyle}>
           <h2>Connect with your profile anywhere</h2>
           <h4>Nulla vitae elit libero, a pharetra augue mollis interdum.</h4>
+          <br/>
         </div>
       </BootstrapCarousel.Item>
       <BootstrapCarousel.Item>
@@ -36,6 +39,7 @@ function Carousel() {
         <div style={captionStyle}>
           <h2>Stay updated to your health record</h2>
           <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h4>
+          <br/>
         </div>
       </BootstrapCarousel.Item>
     </BootstrapCarousel>

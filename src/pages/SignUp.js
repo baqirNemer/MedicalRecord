@@ -184,7 +184,7 @@ function SignUp() {
 
             <div className="mb-3">
               
-              <ContainedButton to="/addlocation">Add New Location</ContainedButton>
+            <ContainedButton to="/addlocation">Add New Location</ContainedButton>
             </div>
             <ContainedButtons text="Next" className="btn btn-primary" onClick={handleNextStep} />
             </div>

@@ -25,11 +25,9 @@ function AddLocation() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Fetch all existing locations from the backend
       const existingLocationsResponse = await axios.get('http://localhost:3001/api/locations');
       const existingLocations = existingLocationsResponse.data;
   
-      // Check if any existing location matches the new location's attributes
       const locationExists = existingLocations.some((location) => {
         return (
           location.city === locationData.city &&
@@ -42,11 +40,9 @@ function AddLocation() {
       if (locationExists) {
         setMessage('Location already exists in the database.');
       } else {
-        // Post location data to backend API if location does not exist
         const createResponse = await axios.post('http://localhost:3001/api/locations', locationData);
         console.log('Location added:', createResponse.data);
         setMessage('Location added successfully!');
-        // Optionally, reset form fields or perform any additional actions after successful submission
       }
     } catch (error) {
       console.error('Error adding location:', error);
@@ -54,7 +50,7 @@ function AddLocation() {
     }
   };
   
-  
+  const userEmail = localStorage.getItem('useremail');
 
   return (
     <div>
@@ -85,7 +81,12 @@ function AddLocation() {
               </div>
               <div className="text-center mt-3">
                 <p>{message}</p>
-                <p>Back to <Link to="/signup">Signup</Link></p>
+                {/* Conditional rendering based on useremail in localStorage */}
+                {userEmail ? (
+                  <p>Back to <Link to="/profileEdit">Edit Profile</Link></p>
+                ) : (
+                  <p>Back to <Link to="/signup">Signup</Link></p>
+                )}
               </div>
             </form>
           </div>
