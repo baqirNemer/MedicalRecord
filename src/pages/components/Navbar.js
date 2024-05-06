@@ -12,8 +12,8 @@ import Tooltip from '@mui/material/Tooltip';
 import Avatar from '@mui/material/Avatar';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useEffect, useState, useRef } from 'react'; // Import useRef hook for maintaining timeout reference
+
 
 function ResponsiveAppBar() {
   const [userDetails, setUserDetails] = useState(null);
@@ -22,13 +22,13 @@ function ResponsiveAppBar() {
   const [userEmail, setUserEmail] = useState(null);
   const [userInitials, setUserInitials] = useState(null);
   const navigate = useNavigate();
+  const activityTimeoutRef = useRef(null); // Ref to store the timeout ID for activity reset
 
-  
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
         const userEmail = localStorage.getItem('useremail');
-        if(userEmail){ 
+        if (userEmail) {
           const userResponse = await fetch(`http://localhost:3001/api/users/${userEmail}`);
 
           if (!userResponse.ok) {
@@ -43,9 +43,8 @@ function ResponsiveAppBar() {
             const lastInitial = userData.l_name.charAt(0).toUpperCase();
             const initials = `${firstInitial}${lastInitial}`;
             setUserInitials(initials);
-            console.log('User initials:', initials);
           }
-      }
+        }
       } catch (error) {
         console.error('Error fetching user details:', error);
       }
@@ -57,9 +56,40 @@ function ResponsiveAppBar() {
     // Set user email from localStorage
     const userEmailFromLocalStorage = localStorage.getItem('useremail');
     setUserEmail(userEmailFromLocalStorage);
+
+    const Remember = localStorage.getItem('rememberMe');
+    const resetActivityTimeout = () => {
+      if (activityTimeoutRef.current) {
+        clearTimeout(activityTimeoutRef.current);
+      }
+
+      // Set timeout duration based on rememberMe flag
+      const timeoutDuration = Remember === 'true' ? 7 * 24 * 60 * 60 * 1000 : 30 * 60 * 1000; // 7 days or 30 minutes
+
+      activityTimeoutRef.current = setTimeout(() => {
+        localStorage.removeItem('useremail');
+        setUserEmail(null); 
+        handleLogoutClick();
+      }, timeoutDuration);
+    };
+
+    const handleUserActivity = () => {
+      resetActivityTimeout();
+    };
+
+    window.addEventListener('mousemove', handleUserActivity);
+    window.addEventListener('keydown', handleUserActivity);
+
+    // Initial call to start the activity timeout
+    resetActivityTimeout();
+
+    return () => {
+      window.removeEventListener('mousemove', handleUserActivity);
+      window.removeEventListener('keydown', handleUserActivity);
+      clearTimeout(activityTimeoutRef.current);
+    };
   }, []);
 
-  
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -88,14 +118,16 @@ function ResponsiveAppBar() {
   const pages = [
     { label: 'Home', key: '/' },
     { label: 'Hospitals', key: '/hospitals' },
-    { label: 'Contact', key: '/contactus' },
-    { label: 'Todays Fact', key: '/todays-fact' }
+    { label: 'Todays Fact', key: '/todays-fact' },
+    { label: 'About', key: '/about' },
+    { label: 'Contact', key: '/contactus' }
   ];
 
   const settings = [
     { label: 'Profile', action: handleProfileClick },
     { label: 'Logout', action: handleLogoutClick }
   ];
+
   return (
     <AppBar position="static" sx={{ backgroundColor: '#008A88'}}>
       <Container maxWidth="xl">
@@ -126,7 +158,16 @@ function ResponsiveAppBar() {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="User Avatar" sx={{ bgcolor: '#3f51b5' }}>
+                  <Avatar
+                    alt="User Avatar"
+                    sx={{
+                      bgcolor: '#FFFFFF', // White background for Avatar
+                      color: '#008A88', // Black color for initials
+                      width: 40, // Adjust size as needed
+                      height: 40, // Adjust size as needed
+                      fontSize: 24, // Adjust font size of initials
+                    }}
+                  >
                     {userInitials}
                   </Avatar>
                 </IconButton>

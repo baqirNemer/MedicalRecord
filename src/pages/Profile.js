@@ -214,6 +214,10 @@ function Profile() {
     setSelectedSection(section);
   };
 
+  const handleEditProfile = () => {
+    navigate('/profileEdit');
+  };
+
   const handleLogoutClick = () => {
     localStorage.removeItem('useremail');
     navigate('/'); 
@@ -249,7 +253,7 @@ function Profile() {
             </Typography>
             {locationDetails && (
               <Typography variant="body1" gutterBottom>
-                <strong>Location:</strong> {locationDetails.city}, {locationDetails.street}
+                <strong>Location:</strong> {locationDetails.city}, {locationDetails.street}, {locationDetails.address1}, {locationDetails.address2}
               </Typography>
             )}
             <Typography variant="body1" gutterBottom>
@@ -264,12 +268,11 @@ function Profile() {
             <Typography variant="body1" gutterBottom>
               <strong>Role:</strong> {userDetails.role_name}
             </Typography>
-            <ContainedButtons text="Edit Profile" />
+           <ContainedButtons text="Edit Profile" onClick={handleEditProfile} />
           </Box>
         </Box>
       )}
 
-  
       {selectedSection === 'records' && (
         <Paper mt={4} sx={{marginTop: '100px' }}>
           <Typography variant="h4" gutterBottom>

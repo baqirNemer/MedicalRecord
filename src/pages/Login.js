@@ -34,11 +34,24 @@ function Login() {
     try {
       const response = await axios.post('http://localhost:3001/api/login', { email, pass });
       localStorage.setItem('useremail', email);
+
+      const rememberMeChecked = document.getElementById('rememberMe').checked;
+      if (rememberMeChecked) {
+        localStorage.setItem('rememberMe', 'true'); // Set rememberMe flag to true in localStorage
+        console.log(localStorage.getItem('rememberMe'));
+      } else {
+        localStorage.removeItem('rememberMe'); // Remove rememberMe flag from localStorage if not checked
+      }
+      
       setMessage('Successfully logged in. Redirecting to homepage...');
       navigate('/');
     } catch (error) {
       setMessage('Login failed. Please check your credentials.');
     }
+  };
+  const handleRememberMeChange = (e) => {
+    // This function is called when the "Remember me" checkbox is toggled
+    // No need to implement anything here as we handle the checkbox state directly in handleLogin
   };
 
   return (
@@ -82,7 +95,12 @@ function Login() {
               <div className="form-row mb-4">
                 <div className="col d-flex justify-content-center">
                   <div className="form-check">
-                    <input className="form-check-input" type="checkbox" value="" id="rememberMe" />
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      id="rememberMe"
+                      onChange={handleRememberMeChange} // Handle checkbox change
+                    />
                     <label className="form-check-label" htmlFor="rememberMe">
                       Remember me?
                     </label>
@@ -106,19 +124,6 @@ function Login() {
                 <p>
                   Not a member? <Link to="/signup">Register</Link>
                 </p>
-                <p>or sign up with:</p>
-                <button type="button" className="btn btn-link btn-floating mx-1">
-                  <i className="fab fa-facebook-f"></i>
-                </button>
-                <button type="button" className="btn btn-link btn-floating mx-1">
-                  <i className="fab fa-google"></i>
-                </button>
-                <button type="button" className="btn btn-link btn-floating mx-1">
-                  <i className="fab fa-twitter"></i>
-                </button>
-                <button type="button" className="btn btn-link btn-floating mx-1">
-                  <i className="fab fa-github"></i>
-                </button>
               </div>
             </form>
           </div>

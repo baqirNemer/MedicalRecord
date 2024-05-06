@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useHistory } from 'react-router-dom';
 import ResponsiveAppBar from './components/Navbar';
 import ResponsiveFooter from './components/footer';
 import ContainedButton from './components/Button';
@@ -14,7 +14,7 @@ const BookAppointment = () => {
   const [date, setDate] = useState('');
   const [message, setMessage] = useState('');
   const userEmail = localStorage.getItem('useremail');
-
+  
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
@@ -46,6 +46,16 @@ const BookAppointment = () => {
     }
   };
 
+  const renderLoginMessage = () => {
+    return (
+      <div className="alert alert-warning text-center">
+        You need to login to book an appointment.
+        <br />
+        <Link to="/login">Login</Link>
+      </div>
+    );
+  };
+
   return (
     <div>
       <ResponsiveAppBar />
@@ -53,59 +63,67 @@ const BookAppointment = () => {
         <div className="card w-50">
           <div className="card-body">
             <h5 className="card-title mb-4 text-center">Book Appointment</h5>
+            {userEmail === null && renderLoginMessage()}
             {message && <div className="alert alert-info text-center">{message}</div>}
-            <form onSubmit={handleAppointmentSubmit}>
-              <div className="form-group">
-                <label>Patient Email:</label>
-                <input
-                  type="email"
-                  className="form-control"
-                  value={userEmail ? userEmail : patientEmail}
-                  onChange={(e) => setPatientEmail(e.target.value)}
-                  disabled={!!userEmail}
-                />
-              </div>
+            {userEmail !== null && ( // Render form only if user is logged in
+              <form onSubmit={handleAppointmentSubmit}>
+                <div className="form-group">
+                  <label>Patient Email:</label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    value={userEmail ? userEmail : patientEmail}
+                    onChange={(e) => setPatientEmail(e.target.value)}
+                    disabled={!!userEmail}
+                  />
+                </div>
 
-              <div className="form-group">
-                <label>Select Doctor:</label>
-                <select
-                  className="form-control"
-                  value={selectedDoctor}
-                  onChange={(e) => setSelectedDoctor(e.target.value)}
-                >
-                  <option value="">Select Doctor</option>
-                  {doctors.map((doctor) => (
-                    <option key={doctor._id} value={doctor._id}>
-                      {doctor.doctor_email}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                <div className="form-group">
+                  <label>Select Doctor:</label>
+                  <select
+                    className="form-control"
+                    value={selectedDoctor}
+                    onChange={(e) => setSelectedDoctor(e.target.value)}
+                  >
+                    <option value="">Select Doctor</option>
+                    {doctors.map((doctor) => (
+                      <option key={doctor._id} value={doctor._id}>
+                        {doctor.doctor_email}
+                      </option>
+                    ))}
+                  </select>
+                </div>
 
-              <div className="form-group">
-                <label>Description:</label>
-                <textarea
-                  className="form-control"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                />
-              </div>
+                <div className="form-group">
+                  <label>Description:</label>
+                  <textarea
+                    className="form-control"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                </div>
 
-              <div className="form-group">
-                <label>Date:</label>
-                <input
-                  type="date"
-                  className="form-control"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
-                />
-              </div>
-              <br />
-              <div className="text-center">
-                <ContainedButton type="submit" text="Book Appointment" className="btn btn-primary btn-block" />
-              </div>
-              <br/>
-            </form>
+                <div className="form-group">
+                  <label>Date:</label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                  />
+                </div>
+                <br />
+                <div className="text-center">
+                  <ContainedButton
+                    type="submit"
+                    text="Book Appointment"
+                    className="btn btn-primary btn-block"
+                    disabled={!userEmail} // Disable button if user is not logged in
+                  />
+                </div>
+                <br />
+              </form>
+            )}
           </div>
         </div>
       </div>

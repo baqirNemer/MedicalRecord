@@ -15,22 +15,22 @@ function ResponsiveFooter() {
           </div>
 
           <div>
-            <a href='' className='me-4 text-reset'>
+            <a className='me-4 text-reset'>
               <i className="bi bi-facebook"></i>
             </a>
-            <a href='' className='me-4 text-reset'>
+            <a className='me-4 text-reset'>
               <i className="bi bi-twitter"></i>
             </a>
-            <a href='' className='me-4 text-reset'>
+            <a className='me-4 text-reset'>
               <i className="bi bi-google"></i>
             </a>
-            <a href='' className='me-4 text-reset'>
+            <a className='me-4 text-reset'>
               <i className="bi bi-instagram"></i>
             </a>
-            <a href='' className='me-4 text-reset'>
+            <a className='me-4 text-reset'>
               <i className="bi bi-linkedin"></i>
             </a>
-            <a href='' className='me-4 text-reset'>
+            <a className='me-4 text-reset'>
               <i className="bi bi-github"></i>
             </a>
           </div>
