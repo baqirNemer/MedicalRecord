@@ -13,7 +13,7 @@ import Avatar from '@mui/material/Avatar';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react'; // Import useRef hook for maintaining timeout reference
-
+import LogoImage from './images/logo_img.png'; 
 
 function ResponsiveAppBar() {
   const [userDetails, setUserDetails] = useState(null);
@@ -118,7 +118,7 @@ function ResponsiveAppBar() {
   const pages = [
     { label: 'Home', key: '/' },
     { label: 'Hospitals', key: '/hospitals' },
-    { label: 'Todays Fact', key: '/todays-fact' },
+    { label: 'Health Search', key: '/health_search' },
     { label: 'About', key: '/about' },
     { label: 'Contact', key: '/contactus' }
   ];
@@ -134,7 +134,7 @@ function ResponsiveAppBar() {
         <Toolbar disableGutters>
           {/* Logo and Navigation Links */}
           <Typography variant="h6" noWrap component={Link} to="/" sx={{ mr: 2, fontFamily: 'monospace', fontWeight: 700, letterSpacing: '.3rem', color: 'inherit', textDecoration: 'none' }}>
-            LOGO
+            <img src={LogoImage} alt="Logo" style={{ height: 40, marginRight: 10 }} />
           </Typography>
           {/* Main Navigation Links */}
           <Box sx={{ flexGrow: 1, justifyContent: 'center', alignItems: 'center', display: { xs: 'none', md: 'flex' } }}>

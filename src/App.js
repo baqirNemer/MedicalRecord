@@ -10,7 +10,7 @@ import ProfileEdit from './pages/ProfileEdit';
 import Hospitals from './pages/Hospitals';
 import HospitalDetails from './pages/HospitalDetails';
 import ContactUs from './pages/ContactUs';
-import TodaysFactPage from './pages/components/TodaysFactPage';
+import HealthSearch from './pages/components/Health_Search';
 import BookAppointment from './pages/BookAppointment';
 import About from './pages/About';
 
@@ -28,7 +28,7 @@ function App() {
           <Route path="/hospitals" element={<Hospitals />} />
           <Route path="/hospital_details/:id" element={<HospitalDetails />} /> 
           <Route path="/contactus" element={<ContactUs />} />
-          <Route path="/todays-fact" element={<TodaysFactPage/>} />
+          <Route path="/health_search" element={<HealthSearch/>} />
           <Route path="/bookappointment/:id" element={<BookAppointment />} />
           <Route path="/about" element={<About />} />
         </Routes>

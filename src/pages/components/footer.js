@@ -1,12 +1,11 @@
-
-// eslint-disable-next-line
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { Link } from 'react-router-dom';
 
 function ResponsiveFooter() {
   return (
-    <footer className="bg-light text-muted pt-2" style={{ paddingBottom: '0' }}> {/* Adjusted paddingBottom */}
+    <footer className="bg-light text-muted pt-2" style={{ paddingBottom: '0' }}>
       <div className="container">
         {/* Social Links Section */}
         <section className='d-flex justify-content-center justify-content-lg-between p-4 border-bottom'>
@@ -40,24 +39,22 @@ function ResponsiveFooter() {
           <div className="col-lg-6">
             <h6 className="fw-bold mb-4">MEDIRECORD</h6>
             <p>Our aim is to keep your health records safe and secure.</p>
-            <p> we provide a platform for you to access your health records from anywhere in the world.</p>
+            <p>We provide a platform for you to access your health records from anywhere in the world.</p>
           </div>
           <div className="col-lg-2">
             <h6 className="fw-bold mb-4">Services</h6>
             <ul className="list-unstyled">
-              <li><a href="#">Diagnostics</a></li>
-              <li><a href="#">Treatment</a></li>
-              <li><a href="#">Surgery</a></li>
-              <li><a href="#">Rehabilitation</a></li>
+              <li><Link to="/hospitals" className='text-reset'>Hospitals</Link></li>
+              <li><Link to="/health_search" className='text-reset'>Health Search</Link></li>
+              <li><Link to="/about" className='text-reset'>About Us</Link></li>
+              <li><Link to="/contactus" className='text-reset'>Contact</Link></li>
             </ul>
           </div>
           <div className="col-lg-2">
             <h6 className="fw-bold mb-4">Useful Links</h6>
             <ul className="list-unstyled">
-              <li><a href="#">Hospital1</a></li>
-              <li><a href="#">Hospital2</a></li>
-              <li><a href="#">Hospital3</a></li>
-              <li><a href="#">Hospital4</a></li>
+              <li><a href="http://localhost:3000/hospital_details/661d8a29e86727b44a28e7b7" className='text-reset'>American University of Beirut Medical Center</a></li>
+              <li><a href="http://localhost:3000/hospital_details/661d8b3cad15d87e8aec1e3b" className='text-reset'>Baabda Governmental Hospital</a></li>
             </ul>
           </div>
           <div className="col-lg-2">

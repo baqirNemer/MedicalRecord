@@ -12,7 +12,8 @@ const captionStyle = {
   textAlign: 'center',
   backgroundColor: 'rgba(0, 0, 0, 0.3)',
   backdropFilter: 'blur(8px)', 
-  padding: '20px',  color: 'white',
+  padding: '20px',
+  color: 'white',
 };
 
 function Carousel() {
@@ -26,7 +27,7 @@ function Carousel() {
         />
         <div style={captionStyle}>
           <h2>Connect with your profile anywhere</h2>
-          <h4>Nulla vitae elit libero, a pharetra augue mollis interdum.</h4>
+          <h4>Access and manage your profile from any device, seamlessly.</h4>
           <br/>
         </div>
       </BootstrapCarousel.Item>
@@ -38,7 +39,7 @@ function Carousel() {
         />
         <div style={captionStyle}>
           <h2>Stay updated to your health record</h2>
-          <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h4>
+          <h4>Keep track of your health records and updates in real-time.</h4>
           <br/>
         </div>
       </BootstrapCarousel.Item>
